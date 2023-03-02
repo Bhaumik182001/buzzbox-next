@@ -3,10 +3,14 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import Header from '../components/Header'
 import { SessionProvider } from "next-auth/react"
+import { ApolloProvider } from "@apollo/client";
+import client from "../apollo-client";
+import { Toaster } from 'react-hot-toast';
 
 function MyApp({ Component, pageProps: {session, ...pageProps} }: AppProps) {
   return (
-    // session provided by different providers through next auth
+  <ApolloProvider client={client}>
+  {/* session provided by different providers through next auth */}
     <SessionProvider session={session}>
       {/* wrap containr to include Head and Header */}
       <div className='h-screen overflow-y-scroll'>
@@ -18,11 +22,12 @@ function MyApp({ Component, pageProps: {session, ...pageProps} }: AppProps) {
         </Head>
         {/* Header passing as a global component through _app */}
         <Header />
+        <Toaster />
         <Component {...pageProps} />
       </div>
     </SessionProvider>
+  </ApolloProvider>
   )
-  
 }
 
 export default MyApp

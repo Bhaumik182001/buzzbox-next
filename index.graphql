@@ -1,0 +1,3 @@
+schema @sdl(files: ["stepzen/postgresql/index.graphql"]) {
+  query: Query
+}
