@@ -15,15 +15,33 @@ type Discussion {
 }
 
 type Post {
-  vote: [Vote] @materializer(query: "getVote")
+  vote: [Vote] @materializer(
+    query: "getVoteById"
+    arguments: [{
+      name: "post_id",
+      field: "id"
+    }]
+    )
   username: String
   title: String
   image: String
   id: ID!
   discussion_id: ID
-  discussion: Discussion @materializer(query: "getDiscussion")
+  discussion: Discussion @materializer(
+    query: "getDiscussionById"
+    arguments: [{
+      name: "id",
+      field: "discussion_id"
+    }]
+    )
   created_at: DateTime
-  comment: [Comment] @materializer(query: "getComment")
+  comment: [Comment] @materializer(
+    query: "getCommentById"
+    arguments: [{
+      name: "post_id",
+      field: "id"
+    }]
+    )
   body: String
 }
 
@@ -65,7 +83,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getComment(id: ID!): [Comment]
+  getCommentById(post_id: ID!): [Comment]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -109,7 +127,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getDiscussion(discussion_id: ID!): Discussion
+  getDiscussionById(id: ID!): Discussion
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -157,7 +175,9 @@ type Query {
     @dbquery(
       type: "postgresql"
       schema: "public"
-      table: "Post"
+      query: """
+      select * from "Post" order by "created_at" desc
+      """
       configuration: "postgresql_config"
     )
   postPaginatedList(first: Int, after: Int): [Post]
@@ -170,12 +190,12 @@ type Query {
       configuration: "postgresql_config"
     )
   " Queries for type 'Vote' "
-  getVote(id: ID!): [Vote]
+  getVoteById(post_id: ID!): [Vote]
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "created_at", "id", "post_id", "upvote", "username" FROM "Vote" WHERE "post_id" = $1
+      SELECT "created_at", "id", "post_id", "upvote", "username" FROM "Vote" WHERE "post_id" = $1 order by "created_at" desc
       """
       configuration: "postgresql_config"
     )

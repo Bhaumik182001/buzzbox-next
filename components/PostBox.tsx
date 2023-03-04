@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Avatar from "./Avatar"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_DISCUSSION_BY_TOPIC } from "../graphql/queries";
+import { GET_ALL_POSTS, GET_DISCUSSION_BY_TOPIC } from "../graphql/queries";
 import client from "../apollo-client";
 import { ADD_DISCUSSION, ADD_POST } from "../graphql/mutation";
 import { toast } from "react-hot-toast";
@@ -27,7 +27,12 @@ function PostBox() {
     const { data: session } = useSession()
     const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm<FormData>();
     
-    const [addPost] = useMutation(ADD_POST);
+    const [addPost] = useMutation(ADD_POST, {
+        refetchQueries: [
+            GET_ALL_POSTS,
+            'postList'
+        ]
+    });
     const [addDiscussion] = useMutation(ADD_DISCUSSION);
 
     const onSubmit = handleSubmit(async (formData)=> {
