@@ -379,10 +379,9 @@ type Mutation {
       configuration: "postgresql_config"
     )
   insertVote(
-    username: String
-    post_id: ID
-    created_at: DateTime
-    upvote: Boolean
+    post_id: ID!
+    username: String!
+    upvote: Boolean!
   ): Vote
     @dbquery(
       type: "postgresql"

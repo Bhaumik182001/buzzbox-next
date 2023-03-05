@@ -10,7 +10,6 @@ type Props = {
 
 function Feed({topic}: Props) {
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const { data, error } = !topic ? useQuery(GET_ALL_POSTS) : useQuery(GET_ALL_POSTS_BY_TOPIC, {
       variables: {
         topic: topic

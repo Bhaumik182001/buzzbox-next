@@ -10,6 +10,17 @@ export const GET_DISCUSSION_BY_TOPIC = gql`
     }
   }
 `
+export const GET_ALL_VOTES_BY_POST_ID = gql`
+query myQuery($post_id: ID!){
+    getVoteById(post_id: $post_id){
+        created_at
+        id
+        post_id
+        upvote
+        username
+    }
+}
+`
 
 export const GET_POST_BY_POST_ID = gql`
 query myQuery($id: ID!){
