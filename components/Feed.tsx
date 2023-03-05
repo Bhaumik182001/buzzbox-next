@@ -1,3 +1,5 @@
+// eslint-disable-next-line react-hooks/exhaustive-deps
+
 import Post from "./Post"
 import { useQuery } from "@apollo/client"
 import { GET_ALL_POSTS, GET_ALL_POSTS_BY_TOPIC } from "../graphql/queries" 
