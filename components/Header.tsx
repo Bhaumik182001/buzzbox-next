@@ -2,6 +2,7 @@ import Image from "next/image"
 import {MagnifyingGlassIcon, UserIcon, ChatBubbleLeftRightIcon, ArrowRightIcon} from "@heroicons/react/24/outline"
 import { SparklesIcon} from "@heroicons/react/24/solid"
 import { useSession, signIn, signOut } from "next-auth/react"
+import Link from "next/link";
 
 function Header() {
     const {data: session} = useSession();
@@ -10,7 +11,9 @@ function Header() {
         {/* Header icon */}
         <div className="cursor-pointer">
             <div className="relative w-40  h-20">
+                <Link href="/">
                 <Image src="https://i.imgur.com/D2c16LH.png" fill className="object-contain" alt="header icon"/>
+                </Link>
             </div>
         </div>
 

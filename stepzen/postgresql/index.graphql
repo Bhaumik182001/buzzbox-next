@@ -180,6 +180,20 @@ type Query {
       """
       configuration: "postgresql_config"
     )
+
+
+    postListByTopic(topic: String!): [Post]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+     select *, "Post"."id" as id from "Post"
+  join "Discussion" on "Discussion"."id"="Post"."discussion_id"
+     where "Discussion"."topic" = $1
+     order by "Post"."created_at" desc
+     """
+      configuration: "postgresql_config"
+    )
   postPaginatedList(first: Int, after: Int): [Post]
     @dbquery(
       type: "postgresql"

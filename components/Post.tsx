@@ -21,16 +21,16 @@ function Post({post}: Props) {
   return (
     <div className="rounded-md flex cursor-pointer border border-gray-600 bg-zinc-900 shadow-sm hover:border hover:border-gray-300">
         <div className="flex items-center flex-col justify-start space-y-1 rounded-l-md bg-zinc-900 p-4 text-gray-400">
-            <ArrowUpIcon  className={`voteButtons hover:text-red-400 `}/>
-            <p className="text-xs font-bold text-white">0</p>
+            <ArrowUpIcon  className={`voteButtons h-6 hover:text-red-400 `}/>
+            <p className="text-xl font-bold text-white">0</p>
             <ArrowDownIcon className={`voteButtons hover:text-blue-400 `}/>
         </div>
         <div className="p-3 pb-1 ">
             {/* Header */}
             <div className="flex space-x-2 items-center">
-            <Avatar seed={"space"} />
+            <Avatar seed={post?.discussion.topic} />
             <p className="text-xs text-gray-400">
-                <Link href={`/subreddit/space`}>
+                <Link href={`/space/${post?.discussion.topic}`}>
                 <span className="font-bold text-white hover:text-blue-400 hover:underline">{post?.discussion.topic}</span>
                 </Link>
                 • Posted by u/{post.username} • <TimeAgo  date={post?.created_at} />

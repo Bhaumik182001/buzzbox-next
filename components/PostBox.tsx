@@ -21,7 +21,7 @@ type Props = {
     discussion?: string
 }
 
-function PostBox() {
+function PostBox({discussion}: Props) {
 
     const [imageBoxOpen, setImageBoxOpen] = useState(false);
     const { data: session } = useSession()
@@ -130,7 +130,8 @@ function PostBox() {
                         className={`px-2 bg-stone-800 rounded-lg h-8 my-1 mr-5 text-white outline-none flex-grow`} 
                         />
                     </div>
-
+                
+                {!discussion && (
                     <div className="flex">
                         <p className="my-auto text-lg min-w-[100px]">Space: </p>
                         <input
@@ -140,6 +141,8 @@ function PostBox() {
                         className={`px-2 bg-stone-800 rounded-lg h-8 my-1 mr-5 text-white outline-none flex-grow`} 
                         />
                     </div>
+                )}
+                    
 
                     {imageBoxOpen && (
                         <div className="flex mb-2">
