@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Avatar from "../../components/Avatar";
 import PostBox from "../../components/PostBox";
-import Feed from "../../components/Feed";
+import FeedTopic from "../../components/FeedTopic";
 
 function Space() {
  
@@ -25,7 +25,8 @@ function Space() {
 <div className="mx-auto mt-5 max-w-5xl pb-10">
     <PostBox discussion={topic as string}/>
     
-    <Feed topic={topic as string}/>
+    <FeedTopic topic={topic as string}/>
+    
 </div>
         
     </div>

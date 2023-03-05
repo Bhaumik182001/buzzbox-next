@@ -3,14 +3,21 @@ import Post from "./Post"
 import { useQuery } from "@apollo/client"
 import { GET_ALL_POSTS, GET_ALL_POSTS_BY_TOPIC } from "../graphql/queries" 
 import { LeapFrog } from "@uiball/loaders"
+type Props = {
+  topic?: string
+}
 
 
-function Feed() {
+function Feed({topic}: Props) {
 
-    const { data, error } = useQuery(GET_ALL_POSTS);
+    const { data, error } =  useQuery(GET_ALL_POSTS_BY_TOPIC, {
+      variables: {
+        topic: topic
+      }
+    });
 
    
-    const posts: Post[] = data?.postList 
+    const posts: Post[] =  data?.postListByTopic
     
 
     if(!posts) return (
