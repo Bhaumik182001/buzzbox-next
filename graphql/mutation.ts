@@ -10,6 +10,18 @@ mutation myMutation($topic: String!){
     }
 }
 `
+
+export const ADD_COMMENT = gql`
+mutation myMutation($username: String!, $post_id: ID!, $text: String!){
+    insertComment(username: $username, post_id: $post_id, text: $text){
+        id
+        post_id
+        text
+        username
+    }
+}
+`
+
 //mutation to add Post
 export const ADD_POST  = gql`
 mutation myMutation(

@@ -19,7 +19,8 @@ function Post({post}: Props) {
     const { data: session} = useSession();
    
   return (
-    <div className="rounded-md flex cursor-pointer border border-gray-600 bg-zinc-900 shadow-sm hover:border hover:border-gray-300">
+    <Link href={`/post/${post?.id}`}>
+<div className="rounded-md flex cursor-pointer border border-gray-600 bg-zinc-900 shadow-sm hover:border hover:border-gray-300 pb-2 mb-2">
         <div className="flex items-center flex-col justify-start space-y-1 rounded-l-md bg-zinc-900 p-4 text-gray-400">
             <ArrowUpIcon  className={`voteButtons h-6 hover:text-red-400 `}/>
             <p className="text-xl font-bold text-white">0</p>
@@ -76,6 +77,8 @@ function Post({post}: Props) {
             </div>
         </div>
     </div>
+    </Link>
+    
   )
 }
 export default Post

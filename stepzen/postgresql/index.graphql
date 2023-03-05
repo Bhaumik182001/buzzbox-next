@@ -164,7 +164,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  post(id: ID!): Post
+  postListById(id: ID!): Post
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -194,6 +194,8 @@ type Query {
      """
       configuration: "postgresql_config"
     )
+
+    
   postPaginatedList(first: Int, after: Int): [Post]
     @dbquery(
       type: "postgresql"
@@ -256,7 +258,7 @@ type Mutation {
     username: String
     post_id: ID
     text: String
-    created_at: DateTime
+   
   ): Comment
     @dbquery(
       type: "postgresql"
