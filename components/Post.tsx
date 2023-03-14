@@ -224,8 +224,8 @@ function Post({post}: Props) {
                     </WhatsappShareButton>
                 </div>
             ) : (
-                <div onClick={()=>setOpenShare(true)} className="postButtons">
-                    <ShareIcon  className="h-6 w-6"/>
+                <div onClick={()=>setOpenShare(true)} className="postButtons hover:text-white">
+                    <ShareIcon  className="h-6 w-6  "/>
                     <p className="hidden sm:inline">Share</p>
                 </div>
             )}
