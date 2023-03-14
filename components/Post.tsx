@@ -191,14 +191,14 @@ function Post({post}: Props) {
             </Link>
             
             {/* Footer */}
-            <div className="flex justify-evenly mt-3 space-x-4 text-gray-400">
-            <Link href={`/post/${post?.id}`}> <div className="postButtons">
-                    <ChatBubbleLeftEllipsisIcon  className="h-6 w-6"/>
+            <div className="flex justify-evenly mt-3 space-x-4 text-gray-400 ">
+            <Link href={`/post/${post?.id}`}> <div className="postButtons hover:text-red-400">
+                    <ChatBubbleLeftEllipsisIcon  className="h-6 w-6 "/>
                     <p className="">{post.comment?.length}</p>
                 </div></Link>
                
 
-                <div className="postButtons">
+                <div className="postButtons hover:text-green-400">
                     <GiftIcon  className="h-6 w-6"/>
                     <p className="hidden sm:inline">Award</p>
                 </div>
@@ -233,8 +233,8 @@ function Post({post}: Props) {
 
                 {session && session?.user?.name === post?.username && (
                     <div  className="flex bg-neutral-800 px-4 rounded-xl justify-around space-x-10">
-                <div className="postButtons">
-                    <PencilSquareIcon   className={`h-6 w-6 `}/>
+                <div className={`postButtons ${session && session?.user?.name === post?.username && 'hover:text-blue-400'}`}>
+                    <PencilSquareIcon  className="h-6 w-6"/>
                     <p className="hidden sm:inline">Edit</p>
                 </div>
 
