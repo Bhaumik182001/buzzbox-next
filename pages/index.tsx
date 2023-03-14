@@ -4,7 +4,7 @@ import Feed from '../components/Feed'
 
 const Home: NextPage = () => {
   return (
-    <div className='max-w-2xl lg:max-w-5xl my-7 mx-auto'>
+    <div className='max-w-2xl lg:max-w-5xl my-7 mx-auto scroll-smooth'>
       {/* PostBox */}
       <PostBox />
 

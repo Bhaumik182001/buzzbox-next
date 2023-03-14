@@ -254,6 +254,17 @@ type Mutation {
       dml: DELETE
       configuration: "postgresql_config"
     )
+
+  deleteCommentWithId(post_id: ID!): [Comment]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      delete from "Comment" where "post_id" = $1
+      """
+      
+      configuration: "postgresql_config"
+    )
   insertComment(
     username: String
     post_id: ID
@@ -306,7 +317,7 @@ type Mutation {
       dml: INSERT
       configuration: "postgresql_config"
     )
-  updateDiscussion(id: ID!, created_at: DateTime, topic: String): Discussion
+  updateDiscussion(id: ID!, topic: String!): Discussion
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -345,24 +356,23 @@ type Mutation {
     )
   updatePost(
     id: ID!
-    body: String
-    created_at: DateTime
-    discussion_id: ID
-    image: String
-    title: String
-    username: String
+    body: String!
+    discussion_id: ID!
+    image: String!
+    title: String!
+    username: String!
   ): Post
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
       UPDATE "Post" SET
+        "id" = COALESCE($1, "id"),
         "body" = COALESCE($2, "body"),
-        "created_at" = COALESCE($3, "created_at"),
-        "discussion_id" = COALESCE($4, "discussion_id"),
-        "image" = COALESCE($5, "image"),
-        "title" = COALESCE($6, "title"),
-        "username" = COALESCE($7, "username")
+        "discussion_id" = COALESCE($3, "discussion_id"),
+        "image" = COALESCE($4, "image"),
+        "title" = COALESCE($5, "title"),
+        "username" = COALESCE($6, "username")
       WHERE
         "id" = $1
       RETURNING *
@@ -376,6 +386,16 @@ type Mutation {
       schema: "public"
       table: "Vote"
       dml: DELETE
+      configuration: "postgresql_config"
+    )
+
+  deleteVoteWithId(post_id: ID!): [Vote]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      delete from "Vote" where "post_id" = $1
+      """
       configuration: "postgresql_config"
     )
   insertVote(

@@ -60,3 +60,49 @@ insertPost(
 }
 }
 `
+
+export const DELETE_POST  = gql`
+mutation myMutation(
+    $id: ID!
+){
+deletePost(
+    id: $id
+){
+    title
+    body
+    username
+    discussion_id
+    image 
+    created_at
+    id
+}
+}
+`
+
+export const DELETE_COMMENTS  = gql`
+mutation myMutation(
+    $post_id: ID!
+){
+deleteCommentWithId(
+    post_id: $post_id
+){
+   id
+   text
+   username
+}
+}
+`
+
+export const DELETE_VOTES  = gql`
+mutation myMutation(
+    $post_id: ID!
+){
+deleteVoteWithId(
+    post_id: $post_id
+){
+   id
+   upvote
+   username
+}
+}
+`

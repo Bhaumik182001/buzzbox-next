@@ -24,7 +24,11 @@
 }
 
 .postButtons {
-    @apply flex items-center space-x-1 text-sm font-semibold p-2 hover:bg-gray-100 cursor-pointer rounded-lg 
+    @apply flex items-center space-x-1 text-sm font-semibold p-2 hover:scale-125 active:scale-95 ease-in-out duration-300 transform transition  cursor-pointer rounded-lg 
+}
+
+.shareButtons {
+  @apply h-6 w-6 rounded-full hover:scale-105 active:scale-95 duration-300 transform transition ease-in-out
 }
 }
 

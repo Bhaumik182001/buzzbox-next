@@ -88,10 +88,11 @@ function PostPage() {
                 <button type="submit" className="rounded-full bg-red-500 p-3 font-semibold text-white disabled:bg-stone-900" disabled={!session}>Comment</button>
             </form>
             </div>
-            <div className="-my-5 rounded-b-md  border-t-0   bg-black
+            <div className="-my-5 rounded-b-md  border-t-0  bg-black
              py-5 px-10">
-                <hr className="mt-2"/>
-                {post?.comment.map(res=>(
+                <hr className="mt-2 mb-2"/>
+                {post?.comment.length>0 ? (
+                    post?.comment.map(res=>(
                     <div className="relative flex items-center space-x-2 space-y-5" key={res.id}>
                         <hr className="absolute border-red-500 top-10 h-16 border left-7 z-0 "/>
                         <div className="z-50">
@@ -105,8 +106,12 @@ function PostPage() {
                             <p>{res.text}</p>
                         </div>
                     </div>
-                ))}
-                <hr className="mt-10 mb-5 "/>
+                    ))) 
+                    : 
+                    <p className="mt-6 text-2xl font-semibold">Be the first one to <span className="text-red-400">Comment</span>!</p>
+                }
+                
+                <hr className="mt-8 mb-3 "/>
             </div>
     </div>
   )
