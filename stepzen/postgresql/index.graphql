@@ -43,6 +43,8 @@ type Post {
     }]
     )
   body: String
+  repost: Boolean
+  reposted_from: String
 }
 
 type Vote {
@@ -180,6 +182,8 @@ type Query {
       """
       configuration: "postgresql_config"
     )
+
+  
 
 
     postListByTopic(topic: String!): [Post]
@@ -346,6 +350,23 @@ type Mutation {
     title: String!
     username: String!
     image: String!
+  ): Post
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "Post"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+
+  rePost(
+    body: String!
+    discussion_id: ID!
+    title: String!
+    username: String!
+    image: String!
+    repost: Boolean!
+    reposted_from: String!
   ): Post
     @dbquery(
       type: "postgresql"

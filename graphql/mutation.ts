@@ -35,6 +35,36 @@ mutation myMutation($username: String!, $post_id: ID!, $text: String!){
 `
 
 //mutation to add Post
+export const MAKE_REPOST  = gql`
+mutation myMutation(
+    $title: String!
+    $body: String!
+    $discussion_id: ID!
+    $username: String!
+    $image: String!
+    $repost: Boolean!
+    $reposted_from: String!
+){
+rePost(
+    body: $body
+    title: $title
+    username: $username
+    discussion_id: $discussion_id
+    image: $image
+    repost: $repost
+    reposted_from: $reposted_from
+){
+    title
+    body
+    username
+    discussion_id
+    image 
+    created_at
+    id
+}
+}
+`
+
 export const ADD_POST  = gql`
 mutation myMutation(
     $title: String!

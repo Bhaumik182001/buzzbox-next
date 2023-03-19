@@ -9,6 +9,8 @@ type Post = {
     vote: Vote[]
     comment: Comments[]
     discussion: Discussion
+    repost: boolean
+    reposted_from: string
 }
 
 type Comments = {

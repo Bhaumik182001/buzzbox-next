@@ -154,7 +154,7 @@ function PostBox({discussion}: Props) {
                             />
                         </div>
                     )}
-                                <button type="submit" className="bg-blue-400 my-2 py-2 rounded-full text-white font-bold" >Create Post</button>
+                    <button type="submit" className="bg-blue-400 my-2 py-2 rounded-full text-white font-bold" >Create Post</button>
 
                 </div>
                 

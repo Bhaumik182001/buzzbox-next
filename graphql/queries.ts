@@ -101,6 +101,8 @@ query myQuery{
         username
         discussion_id
         username
+        repost
+        reposted_from
         comment {
             created_at
             id 

@@ -1,4 +1,4 @@
-import { TrashIcon ,PencilSquareIcon, ArrowDownIcon, ArrowUpIcon, BookmarkSquareIcon, ChatBubbleLeftEllipsisIcon, GiftIcon, ShareIcon, EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline"
+import { ArrowPathIcon, TrashIcon ,PencilSquareIcon, ArrowDownIcon, ArrowUpIcon, BookmarkSquareIcon, ChatBubbleLeftEllipsisIcon, GiftIcon, ShareIcon, EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline"
 import Avatar from "./Avatar"
 import TimeAgo from "react-timeago"
 import Link from "next/link"
@@ -7,24 +7,9 @@ import { toast } from "react-hot-toast"
 import { useEffect, useState } from "react"
 import { useMutation, useQuery } from "@apollo/client"
 import {  GET_ALL_POSTS, GET_ALL_VOTES_BY_POST_ID } from "../graphql/queries" 
-import {  ADD_VOTE, DELETE_COMMENTS, DELETE_POST, DELETE_VOTES } from "../graphql/mutation" 
+import {  ADD_VOTE, DELETE_COMMENTS, DELETE_POST, DELETE_VOTES, MAKE_REPOST } from "../graphql/mutation" 
 import { useRouter } from 'next/router'
-
-
-import {
-   FacebookIcon,
-    RedditIcon,
-    TelegramIcon,
-    TwitterIcon,
-    WhatsappIcon,
-    FacebookShareButton,
-    RedditShareButton,
-    TelegramShareButton,
-    TwitterShareButton,
-    WhatsappShareButton,
-    InstapaperIcon,
-  
-  } from "react-share";
+import { FacebookIcon, RedditIcon, TwitterIcon, WhatsappIcon, FacebookShareButton, RedditShareButton, TwitterShareButton, WhatsappShareButton, } from "react-share";
 
 
 type Props = {
@@ -47,14 +32,9 @@ function Post({post}: Props) {
         }
     })
 
-
-  
-
     const [addVote] = useMutation(ADD_VOTE, {
         refetchQueries: [GET_ALL_VOTES_BY_POST_ID, 'getVoteById']
     })
-
-    
 
     const upVote = async (isUpVote: boolean) =>{
         if(!session){
@@ -97,6 +77,7 @@ function Post({post}: Props) {
             'postList'
         ]
     })
+
 
     const removePost = async (postId: number) => {
         const notification = toast.loading("Deleting Post..");
@@ -143,6 +124,35 @@ function Post({post}: Props) {
 
     }
 
+    const [repost] = useMutation(MAKE_REPOST, {
+        refetchQueries: [
+            GET_ALL_POSTS,
+            'postList'
+        ]
+    });
+
+    const reposted = async () => {
+        const notification = toast.loading("Reposting Post..");
+        await repost({
+            variables: {
+                body: post.body,
+                image: post.image,
+                discussion_id: post.discussion.id,
+                title: post.title,
+                username: session?.user?.name,
+                repost: true,
+                reposted_from: post.username
+            }
+        })
+        toast.success("Repost Sucessful!", {
+            id: notification
+        })
+
+        //push back to homepage after reposting post
+        router.push("/")
+        
+    }
+
     const promotion = {
         url : `http://localhost:3000/post/${post?.id}`,
         title: `Check out my post on this awesome site --> ${post?.title}`
@@ -167,6 +177,10 @@ function Post({post}: Props) {
         </div>
         <div className="p-3 pb-1 w-full">
         <Link href={`/post/${post?.id}`}>
+            {post?.repost && <p className="flex text-xs text-center my-auto text-gray-400 mb-2 ">
+                <ArrowPathIcon className="h-3 w-3 mr-1"/>
+                <span className="my-auto">Reposted from {post?.reposted_from}</span>
+                </p>}
             {/* Header */}
             <div className="flex space-x-2 items-center">
             <Avatar seed={post?.discussion.topic} />
@@ -192,16 +206,18 @@ function Post({post}: Props) {
             
             {/* Footer */}
             <div className="flex justify-evenly mt-3 space-x-4 text-gray-400 ">
-            <Link href={`/post/${post?.id}`}> <div className="postButtons hover:text-red-400">
+            <Link href={`/post/${post?.id}`}>
+                <div className="postButtons hover:text-red-400">
                     <ChatBubbleLeftEllipsisIcon  className="h-6 w-6 "/>
                     <p className="">{post.comment?.length}</p>
-                </div></Link>
+                </div>
+            </Link>
                
 
-                <div className="postButtons hover:text-green-400">
-                    <GiftIcon  className="h-6 w-6"/>
-                    <p className="hidden sm:inline">Award</p>
-                </div>
+                <button onClick={()=>reposted()} disabled={!session}  className={`postButtons ${session && 'hover:text-green-400'}`}>
+                    <ArrowPathIcon  className="h-6 w-6"/>
+                    <p className="hidden sm:inline">Repost</p>
+                </button>
 
                 
                 
@@ -239,7 +255,7 @@ function Post({post}: Props) {
                 </div>
 
                 
-                <div onClick={()=>removePost(post?.id)} className={`postButtons ${session && session?.user?.name === post?.username && 'hover:text-red-400'}`}>
+                <div onClick={()=>removePost(post?.id)} className={`postButtons ${session && session?.user?.name === post?.username && 'hover:text-red-700'}`}>
                     <TrashIcon className={`h-6 w-6 `}/>
                     <p className="hidden sm:inline">Delete</p>
                 </div> 
