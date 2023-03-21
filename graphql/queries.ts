@@ -34,7 +34,7 @@ query myQuery($id: ID!){
         discussion_id
         username
         comment {
-            
+            created_at
             id 
             post_id
             text
