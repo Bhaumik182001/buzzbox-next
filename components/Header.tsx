@@ -29,10 +29,7 @@ function Header() {
         
         {/* right section */}
         <div className="flex my-auto justify-end">
-            <div className="hidden lg:flex space-x-5 my-auto mr-10">
-            <SparklesIcon className=" w-10 h-10 cursor-pointer text-white hover:text-yellow-300"/>
-            <ChatBubbleLeftRightIcon className="text-white w-10 h-10 cursor-pointer"/>
-            </div>
+            
             
         <div onClick={()=> session ? signOut() : signIn()} className='flex bg-white text-black rounded-xl px-4 py-4'>
             <div className='my-auto cursor-pointer border-r-2 pr-3'>
