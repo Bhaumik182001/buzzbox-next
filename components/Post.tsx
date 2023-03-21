@@ -155,7 +155,7 @@ function Post({post}: Props) {
     }
 
     const promotion = {
-        url : `http://localhost:3000/post/${post?.id}`,
+        url : `https://buzzbox-next.vercel.app/post/${post?.id}`,
         title: `Check out my post on this awesome site --> ${post?.title}`
     }
 
