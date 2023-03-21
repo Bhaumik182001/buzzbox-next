@@ -127,10 +127,9 @@ function Post({post}: Props) {
     const [repost] = useMutation(MAKE_REPOST, {
         refetchQueries: [
             GET_ALL_POSTS,
-            'postList',
-            GET_ALL_POSTS_BY_TOPIC,
-            'postListByTopic'
-        ]
+            'postList'
+        ],
+       
     });
 
     const reposted = async () => {
