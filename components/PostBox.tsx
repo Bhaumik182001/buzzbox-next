@@ -39,11 +39,12 @@ function PostBox({discussion}: Props) {
 
     const onSubmit = handleSubmit(async (formData)=> {
 
+        const notification = toast.loading("Creating Post..");
+
         // block to insert Post or Discussion Space
         try{
 
             //loading toast
-            const notification = toast.loading("Creating Post..");
             
             // fetching discussion spaces with same topic name
             const {data: {discussionListByTopic},} = await client.query({
@@ -104,7 +105,9 @@ function PostBox({discussion}: Props) {
         })
         }catch(error){
             console.log(error)
-            toast.error("Unable to create post");
+            toast.error("Unable to create post", {
+                id: notification
+            });
         }
     })
  

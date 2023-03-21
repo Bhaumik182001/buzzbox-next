@@ -58,8 +58,10 @@ function EditPost({post}: Props) {
     const [addDiscussion] = useMutation(ADD_DISCUSSION);
 
     const onSubmit = handleSubmit(async (formData)=> {
+        
+        const notification = toast.loading("Creating Post..");
+
         try{
-            const notification = toast.loading("Creating Post..");
             
             const {data: {discussionListByTopic},} = await client.query({
                 query: GET_DISCUSSION_BY_TOPIC,
@@ -85,7 +87,7 @@ function EditPost({post}: Props) {
                         id: post?.id,
                         body: formData.postBody,
                         discussion_id: newDiscussion.id,
-                        image: formData.postImage,       
+                        image: formData.postImage ? formData.postImage : "",       
                         title: formData.postTitle,
                         username: session?.user?.name,
                     }
@@ -98,7 +100,7 @@ function EditPost({post}: Props) {
                         id: post?.id,
                         body: formData.postBody,
                         discussion_id: discussionListByTopic[0].id,
-                        image: formData.postImage,
+                        image: formData.postImage ? formData.postImage : "",
                         title: formData.postTitle,
                         username: session?.user?.name,
                     }
@@ -112,7 +114,10 @@ function EditPost({post}: Props) {
     }
         catch(error){
             console.log(error)
-            toast.error("Unable to update post");
+            toast.error("Unable to update post", {
+                id: notification
+            });
+            
         }
        
     })
