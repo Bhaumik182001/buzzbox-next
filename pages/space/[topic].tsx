@@ -16,8 +16,7 @@ function Space() {
             </div>
             
             <div className="pb-2">
-                <h1 className="text-3xl text-black font-semibold">Welcome to the r/{topic}</h1>
-                <p className="text-sm text-gray-900">r/{topic}</p>
+                <h1 className="text-3xl text-black font-semibold">Welcome to the s/{topic}</h1>
             </div>
             </div>
         </div>

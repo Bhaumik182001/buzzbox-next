@@ -1,13 +1,15 @@
 import { PhotoIcon } from "@heroicons/react/24/outline"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form";
 import Avatar from "./Avatar"
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_POSTS, GET_ALL_POSTS_BY_TOPIC, GET_DISCUSSION_BY_TOPIC } from "../graphql/queries";
+import {  GET_ALL_POSTS, GET_DISCUSSION_BY_TOPIC, GET_POST_BY_POST_ID } from "../graphql/queries";
 import client from "../apollo-client";
-import { ADD_DISCUSSION, ADD_POST } from "../graphql/mutation";
+import { ADD_DISCUSSION, ADD_POST, UPDATE_POST } from "../graphql/mutation";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
+import { setTimeout } from "timers";
 
 type FormData = {
     postTitle: string
@@ -15,51 +17,60 @@ type FormData = {
     postImage: string
     discussion: string
 }
-  
+
 type Props = {
-    discussion?: string
+    post: Post
 }
-
-function PostBox({discussion}: Props) {
-
-    
+  
+function EditPost({post}: Props) {
 
     const [imageBoxOpen, setImageBoxOpen] = useState(false);
     const { data: session } = useSession()
     const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm<FormData>();
+    const router = useRouter();
+
     
-    const [addPost] = useMutation(ADD_POST, {
+    useEffect(() => {
+        const fillingValues = async () => {
+    
+            setValue('postTitle', post?.title)
+            setValue('postBody', post?.body)
+            setValue('discussion', post?.discussion.topic)
+            
+            if(post?.image != ''){
+                setImageBoxOpen(true);
+                setValue('postImage', post?.image)
+            }
+        }
+
+        fillingValues();
+
+    }, [])
+
+    const [updatePost] = useMutation(UPDATE_POST, {
         
         refetchQueries: [
-            discussion ? GET_ALL_POSTS_BY_TOPIC : GET_ALL_POSTS,
-            discussion ? 'postListByTopic' : 'postList'
+            GET_ALL_POSTS,
+            'postList'
         ]
     });
+
     const [addDiscussion] = useMutation(ADD_DISCUSSION);
 
     const onSubmit = handleSubmit(async (formData)=> {
-
-        // block to insert Post or Discussion Space
         try{
-
-            //loading toast
             const notification = toast.loading("Creating Post..");
             
-            // fetching discussion spaces with same topic name
             const {data: {discussionListByTopic},} = await client.query({
                 query: GET_DISCUSSION_BY_TOPIC,
                 variables: {
-                    topic: discussion ? discussion : formData.discussion
+                    topic: formData.discussion
                 },
             })
 
             // boolean to check if discussion already exists
             const discussionExist = await discussionListByTopic.length > 0
 
-            // using default value for image if not provided by user
-            const image = formData.postImage || ''
-
-            // discussion space does not exist
             if(!discussionExist){
                 // creating new discussion
                 const {data: {insertDiscussion: newDiscussion},} = await addDiscussion({
@@ -69,11 +80,12 @@ function PostBox({discussion}: Props) {
                 })
 
                 //creating new post linked to recently created discussion space
-                const {data: {insertPost: newPost}} = await addPost({
+                await updatePost({
                     variables: {
+                        id: post?.id,
                         body: formData.postBody,
-                        image: image,
                         discussion_id: newDiscussion.id,
+                        image: formData.postImage,       
                         title: formData.postTitle,
                         username: session?.user?.name,
                     }
@@ -81,31 +93,28 @@ function PostBox({discussion}: Props) {
 
             } else {
                 // creating post linked to existing discussion space
-                const {data: {insertPost: newPost}} = await addPost({
+               updatePost({
                     variables: {
+                        id: post?.id,
                         body: formData.postBody,
-                        image: image,
                         discussion_id: discussionListByTopic[0].id,
-                        title: discussion ? discussion : formData.postTitle,
+                        image: formData.postImage,
+                        title: formData.postTitle,
                         username: session?.user?.name,
                     }
                 })  
-
-                console.log(newPost)
+            
+            toast.success("Post Updated!", {
+                id: notification
+            })
+            router.push("/")
         }
-
-        // resetting input values and toast 
-        setValue('postTitle', '')
-        setValue('postBody', '')
-        setValue('postImage', '')
-        setValue('discussion', '')
-        toast.success("Post Created!", {
-            id: notification
-        })
-        }catch(error){
+    }
+        catch(error){
             console.log(error)
-            toast.error("Unable to create post");
+            toast.error("Unable to update post");
         }
+       
     })
  
   return (
@@ -135,7 +144,7 @@ function PostBox({discussion}: Props) {
                         />
                     </div>
                 
-                {!discussion && (
+               
                     <div className="flex">
                         <p className="my-auto text-lg min-w-[100px]">Space: </p>
                         <input
@@ -145,7 +154,7 @@ function PostBox({discussion}: Props) {
                         className={`px-2 bg-stone-800 rounded-lg h-8 my-1 mr-5 text-white outline-none flex-grow`} 
                         />
                     </div>
-                )}
+                
                     
 
                     {imageBoxOpen && (
@@ -159,7 +168,7 @@ function PostBox({discussion}: Props) {
                             />
                         </div>
                     )}
-                    <button type="submit" className="bg-red-400 my-2 py-2 rounded-full text-white font-bold" >Create Post</button>
+                    <button type="submit" className="bg-blue-400 my-2 py-2 rounded-full text-white font-bold" >Save Changes</button>
 
                 </div>
                 
@@ -168,4 +177,4 @@ function PostBox({discussion}: Props) {
     
   )
 }
-export default PostBox
+export default EditPost

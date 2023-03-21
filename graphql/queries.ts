@@ -5,7 +5,7 @@ export const GET_DISCUSSION_BY_TOPIC = gql`
   query myQuery($topic: String!) {
     discussionListByTopic(topic: $topic) {
       id
-      created_at
+      
       topic
     }
   }
@@ -13,7 +13,7 @@ export const GET_DISCUSSION_BY_TOPIC = gql`
 export const GET_ALL_VOTES_BY_POST_ID = gql`
 query myQuery($post_id: ID!){
     getVoteById(post_id: $post_id){
-        created_at
+        
         id
         post_id
         upvote
@@ -26,7 +26,7 @@ export const GET_POST_BY_POST_ID = gql`
 query myQuery($id: ID!){
     postListById(id: $id) {
         body
-        created_at
+        
         id 
         image
         title
@@ -34,19 +34,19 @@ query myQuery($id: ID!){
         discussion_id
         username
         comment {
-            created_at
+            
             id 
             post_id
             text
             username
         }
         discussion{
-            created_at
+            
             id
             topic
         }
         vote {
-            created_at
+            
             id
             post_id
             upvote
@@ -65,22 +65,24 @@ query myQuery($topic: String!){
         image
         title
         username
+        repost
+        reposted_from
         discussion_id
         username
         comment {
-            created_at
+            
             id 
             post_id
             text
             username
         }
         discussion{
-            created_at
+            
             id
             topic
         }
         vote {
-            created_at
+            
             id
             post_id
             upvote
@@ -94,7 +96,7 @@ export const GET_ALL_POSTS = gql`
 query myQuery{
     postList {
         body
-        created_at
+        
         id 
         image
         title
@@ -104,19 +106,19 @@ query myQuery{
         repost
         reposted_from
         comment {
-            created_at
+            
             id 
             post_id
             text
             username
         }
         discussion{
-            created_at
+            
             id
             topic
         }
         vote {
-            created_at
+            
             id
             post_id
             upvote

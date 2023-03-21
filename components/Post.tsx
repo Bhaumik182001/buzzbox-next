@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react"
 import { toast } from "react-hot-toast"
 import { useEffect, useState } from "react"
 import { useMutation, useQuery } from "@apollo/client"
-import {  GET_ALL_POSTS, GET_ALL_VOTES_BY_POST_ID } from "../graphql/queries" 
+import {  GET_ALL_POSTS, GET_ALL_POSTS_BY_TOPIC, GET_ALL_VOTES_BY_POST_ID } from "../graphql/queries" 
 import {  ADD_VOTE, DELETE_COMMENTS, DELETE_POST, DELETE_VOTES, MAKE_REPOST } from "../graphql/mutation" 
 import { useRouter } from 'next/router'
 import { FacebookIcon, RedditIcon, TwitterIcon, WhatsappIcon, FacebookShareButton, RedditShareButton, TwitterShareButton, WhatsappShareButton, } from "react-share";
@@ -127,7 +127,9 @@ function Post({post}: Props) {
     const [repost] = useMutation(MAKE_REPOST, {
         refetchQueries: [
             GET_ALL_POSTS,
-            'postList'
+            'postList',
+            GET_ALL_POSTS_BY_TOPIC,
+            'postListByTopic'
         ]
     });
 
@@ -186,7 +188,7 @@ function Post({post}: Props) {
             <Avatar seed={post?.discussion.topic} />
             <p className="text-xs text-gray-400">
                 <Link href={`/space/${post?.discussion.topic}`}>
-                <span className="font-bold text-white hover:text-blue-400 hover:underline">{post?.discussion.topic}</span>
+                <span className="font-bold text-white hover:text-blue-400 hover:underline">s/{post?.discussion.topic}</span>
                 </Link>
                 • Posted by u/{post.username} • <TimeAgo  date={post?.created_at} />
             </p>
@@ -249,16 +251,18 @@ function Post({post}: Props) {
 
                 {session && session?.user?.name === post?.username && (
                     <div  className="flex bg-neutral-800 px-4 rounded-xl justify-around space-x-10">
-                <div className={`postButtons ${session && session?.user?.name === post?.username && 'hover:text-blue-400'}`}>
-                    <PencilSquareIcon  className="h-6 w-6"/>
-                    <p className="hidden sm:inline">Edit</p>
-                </div>
+                       <Link href={`/edit/${post?.id}`}>
+                            <div className={`postButtons ${session && session?.user?.name === post?.username && 'hover:text-blue-400'}`}>
+                                <PencilSquareIcon  className="h-6 w-6"/>
+                                <p className="hidden sm:inline">Edit</p>
+                            </div>
+                        </Link>
 
-                
-                <div onClick={()=>removePost(post?.id)} className={`postButtons ${session && session?.user?.name === post?.username && 'hover:text-red-700'}`}>
-                    <TrashIcon className={`h-6 w-6 `}/>
-                    <p className="hidden sm:inline">Delete</p>
-                </div> 
+                        
+                        <div onClick={()=>removePost(post?.id)} className={`postButtons ${session && session?.user?.name === post?.username && 'hover:text-red-700'}`}>
+                            <TrashIcon className={`h-6 w-6 `}/>
+                            <p className="hidden sm:inline">Delete</p>
+                        </div> 
                 </div>
                 )}                
                 

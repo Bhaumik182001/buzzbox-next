@@ -64,6 +64,34 @@ rePost(
 }
 }
 `
+export const UPDATE_POST  = gql`
+mutation myMutation(
+    $id: ID!
+    $body: String!
+    $discussion_id: ID!
+    $image: String!
+    $title: String!
+    $username: String!
+    
+){
+updatePost(
+    id: $id
+    body: $body
+    discussion_id: $discussion_id
+    image: $image
+    title: $title
+    username: $username
+){
+    title
+    body
+    username
+    discussion_id
+    image 
+    created_at
+    id
+}
+}
+`
 
 export const ADD_POST  = gql`
 mutation myMutation(
