@@ -26,7 +26,7 @@ export const GET_POST_BY_POST_ID = gql`
 query myQuery($id: ID!){
     postListById(id: $id) {
         body
-        
+        created_at
         id 
         image
         title
@@ -96,7 +96,7 @@ export const GET_ALL_POSTS = gql`
 query myQuery{
     postList {
         body
-        
+        created_at
         id 
         image
         title
