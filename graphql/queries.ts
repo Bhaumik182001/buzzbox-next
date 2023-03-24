@@ -22,6 +22,15 @@ query myQuery($post_id: ID!){
 }
 `
 
+export const GET_DISCUSSION_LIST = gql`
+  query myQuery {
+    discussionList {
+      id
+      topic
+    }
+  }
+`
+
 export const GET_POST_BY_POST_ID = gql`
 query myQuery($id: ID!){
     postListById(id: $id) {

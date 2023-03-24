@@ -113,7 +113,7 @@ function PostBox({discussion}: Props) {
  
   return (
 
-        <form onSubmit={onSubmit} className="flex flex-col border-2 border-white rounded-lg px-3 py-3 mt-2 sticky top-32 bg-black md:top-30 z-50 p-2 ">
+        <form onSubmit={onSubmit} className="flex flex-col border-2 border-white rounded-lg px-3 py-3 mt-2 sticky top-32 bg-black md:top-30 z-20 p-2 ">
             <div className="flex">
                 <Avatar />
                 <input 
