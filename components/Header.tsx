@@ -53,7 +53,7 @@ function Header() {
                  {spaces && spaces.map(res=>{
                     return(
                 
-                            <p onClick={()=>{
+                            <p key={res.id} onClick={()=>{
                                 router.push(`/space/${res.topic}`)
                                 setSearchValue("");
                             }} className="text-black hover:font-bold hover:cursor-pointer px-4 border-b-2 duration-200 ease-in-out  transform transition last:border-b-0">
