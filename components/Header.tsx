@@ -24,7 +24,7 @@ function Header() {
 
    useEffect(()=>{
    
-    setSpaces([...val].filter((res)=>{
+    setSpaces(val && [...val].filter((res)=>{
         return res.topic.toLowerCase().includes(searchValue.toLowerCase())
     }))
     
@@ -50,7 +50,7 @@ function Header() {
 
             {searchValue && (
                 <div className="absolute mt-5 space-y-1 z-50 lg:w-[500px] w-[240px] py-2 rounded-lg bg-white">
-                 {spaces.map(res=>{
+                 {spaces && spaces.map(res=>{
                     return(
                 
                             <p onClick={()=>{
