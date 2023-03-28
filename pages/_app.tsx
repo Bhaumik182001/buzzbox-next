@@ -7,6 +7,9 @@ import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-client";
 import { Toaster } from 'react-hot-toast';
 
+/**
+ * Components are wrapped in AppolloProvider and Session Provider with Head, Header and Toaster render before childern Components
+ */
 function MyApp({ Component, pageProps: {session, ...pageProps} }: AppProps) {
   return (
   <ApolloProvider client={client}>

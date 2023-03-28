@@ -1,9 +1,13 @@
 import { useQuery } from "@apollo/client";
-import router, { useRouter } from "next/router";
+import  { useRouter } from "next/router";
 import EditPost from "../../components/EditPost"
 import { GET_POST_BY_POST_ID } from "../../graphql/queries";
 import { LeapFrog } from "@uiball/loaders";
 
+/**
+ * Edit component takes id from query then fetches post
+ * post is passed down as a prop from EditPost component
+ */
 function Edit() {
   const router = useRouter();
 

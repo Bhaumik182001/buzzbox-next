@@ -9,25 +9,30 @@ import { useRouter } from "next/router";
 
 function Header() {
     const {data: session} = useSession();
-    const [selectedResult, setSelectedResult] = useState<any>(null);
+
+    /**
+     * val useState is all the data fetched from query
+     * searchVal is input value
+     * spaces is filter result from val
+     */
     const [spaces, setSpaces] = useState<Discussion[]>([])
     const [searchValue, setSearchValue] = useState<string>("");
     const [val, setVal] = useState<Discussion[]>([])
     const router = useRouter();
 
-    const {data, error} = useQuery(GET_DISCUSSION_LIST);
+    const {data} = useQuery(GET_DISCUSSION_LIST);
     
+    // function is executed when user clicks on search input
    const fillData = () => {
     const discussion: Discussion[] =  data?.discussionList; 
     setVal(discussion)  
    }
 
+   //each time search value changes, spaces array is reassigned as a filtered result from val array
    useEffect(()=>{
-   
-    setSpaces(val && [...val].filter((res)=>{
-        return res.topic.toLowerCase().includes(searchValue.toLowerCase())
-    }))
-    
+        setSpaces(val && [...val].filter((res)=>{
+            return res.topic.toLowerCase().includes(searchValue.toLowerCase())
+        }))  
    },[searchValue])
 
   return (
@@ -71,24 +76,26 @@ function Header() {
         
         {/* right section */}
         <div className="flex my-auto justify-end">
-            
-            
-        <div onClick={()=> session ? signOut() : signIn()} className='flex bg-white text-black rounded-xl px-4 py-4'>
-            <div className='my-auto cursor-pointer border-r-2 pr-3'>
-            <p>{session ? (
-                <>
-                <p className="text-sm font-semibold">Welcome,</p>
-                <p className="tuncate font-semibold text-xs">{session?.user?.name}!</p>
-                </>
+            {/* conditional rendering of div block and component based on authentication */}
+            <div onClick={()=> session ? signOut() : signIn()} className='flex bg-white text-black rounded-xl px-4 py-4'>
+                <div className='my-auto cursor-pointer border-r-2 pr-3'>
+                    <p>{session ? (
+                        <>
+                            <p className="text-sm font-semibold">Welcome,</p>
+                            <p className="tuncate font-semibold text-xs">{session?.user?.name}!</p>
+                        </>
+                        
+                        ): "Sign In"
+                        }
+                    </p>
+                </div>
                 
-            ):"Sign In"}</p>
+                {session ? (
+                    <ArrowRightIcon className='h-6 my-auto pl-3 cursor-pointer'/>
+                ) : (
+                    <UserIcon className='h-6 my-auto pl-3 cursor-pointer'/>
+                )}
             </div>
-            {session ? (
-                <ArrowRightIcon className='h-6 my-auto pl-3 cursor-pointer'/>
-            ) : (
-                <UserIcon className='h-6 my-auto pl-3 cursor-pointer'/>
-            )}
-        </div>
         </div>
 
         

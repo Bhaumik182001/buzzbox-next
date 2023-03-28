@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-//query to get spaces by topic
+//query to fetch spaces by topic
 export const GET_DISCUSSION_BY_TOPIC = gql`
   query myQuery($topic: String!) {
     discussionListByTopic(topic: $topic) {
@@ -10,6 +10,7 @@ export const GET_DISCUSSION_BY_TOPIC = gql`
     }
   }
 `
+// query to fetch all votes linked to post
 export const GET_ALL_VOTES_BY_POST_ID = gql`
 query myQuery($post_id: ID!){
     getVoteById(post_id: $post_id){
@@ -22,6 +23,7 @@ query myQuery($post_id: ID!){
 }
 `
 
+// query to all discussions/spaces
 export const GET_DISCUSSION_LIST = gql`
   query myQuery {
     discussionList {
@@ -31,6 +33,7 @@ export const GET_DISCUSSION_LIST = gql`
   }
 `
 
+// query to get specific post by id
 export const GET_POST_BY_POST_ID = gql`
 query myQuery($id: ID!){
     postListById(id: $id) {
@@ -65,6 +68,7 @@ query myQuery($id: ID!){
 }
 `
 
+//query to get all posts linked to topic
 export const GET_ALL_POSTS_BY_TOPIC = gql`
 query myQuery($topic: String!){
     postListByTopic(topic: $topic) {
@@ -100,7 +104,7 @@ query myQuery($topic: String!){
     }
 }
 `
-
+// query to get all posts
 export const GET_ALL_POSTS = gql`
 query myQuery{
     postList {

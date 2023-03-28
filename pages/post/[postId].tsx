@@ -14,17 +14,22 @@ type FormData = {
     comment: string
 }
 
+/**
+ * post page returns post component and render comments below it
+ * this component deals with adding comment logic 
+ */
 function PostPage() {
     const router = useRouter();
     const { data: session } = useSession();
-     const [addComment] = useMutation(ADD_COMMENT, {
+     
+    // after adding comment refetch the same post with updated fields
+    const [addComment] = useMutation(ADD_COMMENT, {
          refetchQueries: [GET_POST_BY_POST_ID, 'postListByPostId']
      })
 
     const {
         register,
         handleSubmit,
-        watch,
         setValue,
         formState: { errors },
     } = useForm<FormData>();
@@ -35,12 +40,12 @@ function PostPage() {
         },
     });
 
-    console.log(router.query.postId)
-   
+
+   // storing post value when fetched from query
     const post: Post = data?.postListById;
 
+    // onSubmit adding comment and managing notification
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        console.log(data);
 
         const notification = toast.loading("Posting your comment...")
 
@@ -59,7 +64,6 @@ function PostPage() {
         })
     }
 
-    console.log(data)
 
     if(!post) return (
         <div className="flex w-full p-10 items-center justify-center text-xl">

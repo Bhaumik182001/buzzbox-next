@@ -1,4 +1,4 @@
-import { ArrowPathIcon, TrashIcon ,PencilSquareIcon, ArrowDownIcon, ArrowUpIcon, BookmarkSquareIcon, ChatBubbleLeftEllipsisIcon, GiftIcon, ShareIcon, EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline"
+import { ArrowPathIcon, TrashIcon ,PencilSquareIcon, ArrowDownIcon, ArrowUpIcon, ChatBubbleLeftEllipsisIcon, ShareIcon } from "@heroicons/react/24/outline"
 import Avatar from "./Avatar"
 import TimeAgo from "react-timeago"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react"
 import { toast } from "react-hot-toast"
 import { useEffect, useState } from "react"
 import { useMutation, useQuery } from "@apollo/client"
-import {  GET_ALL_POSTS, GET_ALL_POSTS_BY_TOPIC, GET_ALL_VOTES_BY_POST_ID } from "../graphql/queries" 
+import {  GET_ALL_POSTS, GET_ALL_VOTES_BY_POST_ID } from "../graphql/queries" 
 import {  ADD_VOTE, DELETE_COMMENTS, DELETE_POST, DELETE_VOTES, MAKE_REPOST } from "../graphql/mutation" 
 import { useRouter } from 'next/router'
 import { FacebookIcon, RedditIcon, TwitterIcon, WhatsappIcon, FacebookShareButton, RedditShareButton, TwitterShareButton, WhatsappShareButton, } from "react-share";
@@ -23,14 +23,20 @@ function Post({post}: Props) {
 
     let router= useRouter();
     const { data: session} = useSession();
+    
+    // hook for determining if user voted and custom share Modal
     const [vote, setVote] = useState<Boolean>();
     const [openShare, setOpenShare] = useState<Boolean>(false);
 
-    const {data, loading} = useQuery(GET_ALL_VOTES_BY_POST_ID, {
+    const { data } = useQuery(GET_ALL_VOTES_BY_POST_ID, {
         variables: {
             post_id: post?.id
         }
     })
+
+    /**
+     * logic to add vote and then refetching the post with updated value
+     */
 
     const [addVote] = useMutation(ADD_VOTE, {
         refetchQueries: [GET_ALL_VOTES_BY_POST_ID, 'getVoteById']
@@ -55,6 +61,10 @@ function Post({post}: Props) {
         })
     }
 
+    /**
+     * logic which fetches votes linked to list
+     * getting sum votes where true is +1 and false us -1 to resulted number
+     */
     const displayVotes = (data: any) => {
         const votes: Vote[] = data?.getVoteById
         const displayNumber = votes?.reduce((total, vote)=> vote.upvote ? total += 1 : total=-1, 0)
@@ -67,6 +77,10 @@ function Post({post}: Props) {
         return displayNumber;
     }
 
+    /**
+     * before deleting post, function queries all votes and comments linked to post
+     * if exists then deletes the votes and comments before deleting post
+     */
     const [deleteComment] = useMutation(DELETE_COMMENTS);
 
     const [deleteVote] = useMutation(DELETE_VOTES);
@@ -132,6 +146,7 @@ function Post({post}: Props) {
        
     });
 
+    // same logic as addPost but with modification on username, repost and reposted_from
     const reposted = async () => {
         const notification = toast.loading("Reposting Post..");
         await repost({
@@ -164,7 +179,7 @@ function Post({post}: Props) {
         const vote = votes?.find(
             vote => vote.username == session?.user?.name
         )?.upvote
-        console.log(votes);
+       
         setVote(vote);
     },[data])
 

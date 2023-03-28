@@ -3,6 +3,10 @@ import Avatar from "../../components/Avatar";
 import PostBox from "../../components/PostBox";
 import FeedTopic from "../../components/FeedTopic";
 
+/**
+ * query to get topic for space then passing it down as prop for FeedTopic component
+ * topic prop is passed on to postbox to autofill discussion topic form value
+ */
 function Space() {
  
   const { query: {topic},} = useRouter();

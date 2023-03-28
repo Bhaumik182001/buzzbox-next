@@ -1,15 +1,17 @@
-
 import Post from "./Post"
 import { useQuery } from "@apollo/client"
-import { GET_ALL_POSTS, GET_ALL_POSTS_BY_TOPIC } from "../graphql/queries" 
+import { GET_ALL_POSTS } from "../graphql/queries" 
 import { LeapFrog } from "@uiball/loaders"
 
 
+/**
+ * pull all posts from query and then store it in post array
+ * while data is being fetched, leap frog animation is displayed
+ * @returns post array mapped on Post component
+ */
 function Feed() {
 
-    const { data, error } = useQuery(GET_ALL_POSTS);
-
-   
+    const { data } = useQuery(GET_ALL_POSTS);
     const posts: Post[] = data?.postList 
     
 
