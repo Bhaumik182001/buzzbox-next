@@ -1,14 +1,10 @@
-Certainly! Here's a detailed `README.md` file for your BuzzBox web application:
-
----
-
 # BuzzBox Web Application
 
 **Live Demo**: [BuzzBox on Vercel](https://buzzbox-next.vercel.app)
 
 BuzzBox is a social media web application inspired by platforms like Twitter and Reddit. Built with Next.js and React.js, BuzzBox offers a full range of CRUD functionalities as well as additional features such as real-time changes, post sharing, and user authentication. Read below to learn more about its features and the technologies used.
 
-<img src="https://i.imgur.com/P9kx0BQ.png" alt="BuzzBox Preview" height="660">
+<img src="https://i.imgur.com/P9kx0BQ.png" alt="BuzzBox Preview" height="500">
 
 
 ---
