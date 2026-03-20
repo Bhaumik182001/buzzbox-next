@@ -1,0 +1,33 @@
+CREATE TABLE "Discussion" (
+    "id" SERIAL PRIMARY KEY,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "topic" TEXT NOT NULL
+);
+
+CREATE TABLE "Post" (
+    "id" SERIAL PRIMARY KEY,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "discussion_id" INTEGER REFERENCES "Discussion"("id") ON DELETE CASCADE,
+    "title" TEXT NOT NULL,
+    "body" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "repost" BOOLEAN DEFAULT FALSE,
+    "reposted_from" TEXT
+);
+
+CREATE TABLE "Comment" (
+    "id" SERIAL PRIMARY KEY,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "post_id" INTEGER REFERENCES "Post"("id") ON DELETE CASCADE,
+    "text" TEXT NOT NULL,
+    "username" TEXT NOT NULL
+);
+
+CREATE TABLE "Vote" (
+    "id" SERIAL PRIMARY KEY,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "post_id" INTEGER REFERENCES "Post"("id") ON DELETE CASCADE,
+    "upvote" BOOLEAN NOT NULL,
+    "username" TEXT NOT NULL
+);
